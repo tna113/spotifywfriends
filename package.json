@@ -1,11 +1,13 @@
 {
   "name": "spotifywfriends",
   "version": "1.0.0",
+  "homepage": "https://theaarias.com",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build_staging": "PUBLIC_URL=https://theaarias.com/ react-scripts build"
   },
   "keywords": [],
   "author": "",
