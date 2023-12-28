@@ -9,7 +9,10 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-duplicate-imports": "error",
-    "no-irregular-whitespace": "error"
+    "react/prop-types": 0,
+    "forbid-prop-types": 0,
+    "no-duplicate-imports": 2,
+    "no-irregular-whitespace": 1,
+    "spaced-comment": 0
   }
 }
