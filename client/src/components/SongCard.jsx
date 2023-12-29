@@ -2,8 +2,8 @@ import React from "react";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 
 const songCardStyles = {
-  height: '20em',
-  width: '20em',
+  height: '16em',
+  width: '16em',
   padding: '1em'
 }
 
@@ -15,8 +15,8 @@ export default function SongCard({title,artist}) {
         </Container>
 
         <Stack direction="column" padding={1}>
-          <Typography variant="h4">{title}</Typography>
-          <Typography variant="h5">{artist}</Typography>
+          <Typography variant="h5">{title}</Typography>
+          <Typography variant="body">{artist}</Typography>
         </Stack>
     </Paper>
   );
