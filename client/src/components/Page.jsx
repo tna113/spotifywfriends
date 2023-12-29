@@ -2,13 +2,13 @@ import React from "react";
 import { Box, Container, Stack, Typography } from "@mui/material";
 
 const pageStyles = {
-  paddingTop: "2em",
+  padding: "2em",
 };
 
-export default function Page({ children, title, sx }) {
+export default function Page({ children, title, sx, direction }) {
   return (
     <Container maxWidth="md" sx={{ ...pageStyles, ...sx }}>
-      <Stack direction="column">
+      <Stack direction={direction} spacing={4}>
         {title && (
           <Box>
             <Typography variant="h3" gutterBottom>
