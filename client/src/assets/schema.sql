@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `song` (
     `imgUrl` varchar(255) DEFAULT 'some url',
     `rating` int NOT NULL,
     `dateAdded` datetime DEFAULT NULL,
+    `comment` varchar(255) DEFAULT 'some comment',
     `sharedSongsId` int NOT NULL,
     FOREIGN KEY (sharedSongsId) REFERENCES sharedSongsPlaylist(sharedSongsId)
 );

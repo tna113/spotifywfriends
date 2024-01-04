@@ -1,0 +1,820 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "spotifywfriends-api",
+    "description": "spotifywfrends api",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/TA7384/spotifywfriendsapi/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "get": {
+        "summary": "gets authenticated status and user object",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "header",
+            "description": "username used to log into web application",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "header",
+            "description": "password used to log into web application",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "authentication boolean and user object",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "incorrect credentials",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "description": "logs out, deletes cookies and termiantes the session",
+        "responses": {
+          "200": {
+            "description": "successfully deleted cookies and termianted the session"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "description": "get all users",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "cookie",
+            "description": "role of the current user",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "description": "get a user using their username",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "username of the user to get",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      },
+      "put": {
+        "description": "edit a user",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "cookie",
+            "description": "role of the current user trying to edit",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "username of the user to edit",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "cookie",
+            "description": "password of the user to edit",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successfully edit the user"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "playlist not found"
+          },
+          "405": {
+            "description": "you do not have permission to edit this user"
+          }
+        }
+      },
+      "delete": {
+        "description": "deletes a user",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "cookie",
+            "description": "role of the current user trying to edit",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "username of the user to delete",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "user not found"
+          },
+          "405": {
+            "description": "you do not have permission to delete this user"
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "description": "creates a new user",
+        "parameters": [
+          {
+            "name": "newUser",
+            "in": "cookie",
+            "description": "credentials of new user",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/user"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "user added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "playlist not found"
+          },
+          "405": {
+            "description": "you do not have permission to add a user"
+          }
+        }
+      }
+    },
+    "/playlists": {
+      "get": {
+        "description": "returns all playlists",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "cookie",
+            "description": "role of the current user",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all playlists shared with users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/sharedSongsPlaylist"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "playlist not found"
+          },
+          "405": {
+            "description": "you do not have permission to add a user"
+          }
+        }
+      }
+    },
+    "/playlists/{sharedSongsId}": {
+      "put": {
+        "description": "edits the user's playlist",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "cookie",
+            "description": "the current user's role",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sharedSongsId",
+            "in": "path",
+            "description": "id of the playlist to edit",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "newPlaylist",
+            "in": "cookie",
+            "description": "new playlist object to replace old playlist object",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/sharedSongsPlaylist"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/sharedSongsPlaylist"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "playlist not found"
+          },
+          "405": {
+            "description": "you do not have permission to edit this playlist"
+          }
+        }
+      },
+      "delete": {
+        "description": "deletes a user's playlist",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "cookie",
+            "description": "the current user's role",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sharedSongsId",
+            "in": "path",
+            "description": "id of the playlist to edit",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/sharedSongsPlaylist"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "playlist not found"
+          },
+          "405": {
+            "description": "you do not have permission to delete this playlist"
+          }
+        }
+      }
+    },
+    "/playlists/{username}": {
+      "get": {
+        "description": "returns the user's playlist shared with admin",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "username used to get user's playlist",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "playlist object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/sharedSongsPlaylist"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/playlists/{username}/songs/{songId}": {
+      "get": {
+        "description": "returns a song indicated by its id",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "co-owner of the playlist",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "songId",
+            "in": "path",
+            "description": "id of the song to get",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "song object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/song"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      },
+      "put": {
+        "description": "edits a song",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "co-owner of the playlist",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "songId",
+            "in": "path",
+            "description": "songId of song to edit",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "song",
+            "in": "cookie",
+            "description": "new song object to replace old song object",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/song"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successfully changed song",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/song"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "playlist not found"
+          },
+          "405": {
+            "description": "you do not have permission to edit this song"
+          }
+        }
+      },
+      "delete": {
+        "description": "deletes a song indicated by its id",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "co-owner of the playlist",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "songId",
+            "in": "path",
+            "description": "id of the song to delete",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "user not found"
+          },
+          "405": {
+            "description": "you do not have permission to delete this song"
+          }
+        }
+      }
+    },
+    "/addSong": {
+      "post": {
+        "description": "song to add into the shared playlist",
+        "parameters": [
+          {
+            "name": "song",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/newSong"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "song added to playlist"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "unauthorized, please log in"
+          },
+          "404": {
+            "description": "playlist not found"
+          },
+          "405": {
+            "description": "you do not have permission to add to this playlist"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "user": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "sharedSongsPlaylist": {
+        "type": "object",
+        "properties": {
+          "sharedSongsId": {
+            "type": "integer"
+          },
+          "playlistName": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer"
+          },
+          "songs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/song"
+            }
+          }
+        },
+        "description": "playlist made up of songs shared between admin and the user"
+      },
+      "song": {
+        "type": "object",
+        "properties": {
+          "songId": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "artist": {
+            "type": "string"
+          },
+          "spotifyLink": {
+            "type": "string"
+          },
+          "audioPreviewUrl": {
+            "type": "string"
+          },
+          "imgUrl": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer"
+          },
+          "dateAdded": {
+            "type": "string",
+            "description": "the timestamp when the song was added",
+            "format": "date-time"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "sharedSongsId": {
+            "type": "integer"
+          }
+        }
+      },
+      "newSong": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "artist": {
+            "type": "string"
+          },
+          "spotifyLink": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer"
+          },
+          "dateAdded": {
+            "type": "string",
+            "description": "the timestamp when the song was added",
+            "format": "date-time"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "sharedSongsId": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}
