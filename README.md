@@ -4,7 +4,7 @@
 ## technology
 **frontend**: react js, [MUI component library](https://mui.com/)
 
-**backend**: node.js, express, [axios](https://github.com/axios/axios)
+**backend**: node.js, [express](https://github.com/expressjs/express), [axios](https://github.com/axios/axios)
 
 **database**: mysql 
 
