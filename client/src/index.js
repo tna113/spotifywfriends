@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import DebugScreen from "./features/debug/DebugScreen";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
   },
+  {
+    path: "/debug",
+    element: <DebugScreen />
+  }
 ]);
 
 // Creates the theme for MUI
