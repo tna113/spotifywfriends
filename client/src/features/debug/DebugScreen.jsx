@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import Page from "../../components/Page";
 
 const buttonBox = {
@@ -18,7 +19,9 @@ export default function DebugScreen() {
     return (
         <Page title="debug screen" subtitle="a screen for debugging/development purposes">
             <div style={buttonBox}>
-                <Button variant="outlined">home screen</Button>
+                <Link to="/home">
+                    <Button variant="outlined">home screen</Button>
+                </Link>
                 <Button variant="outlined">login screen</Button>
             </div>
 
