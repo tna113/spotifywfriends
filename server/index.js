@@ -11,7 +11,7 @@ const DBNAME = "theaaria_spotifywfriends";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors()); //cors-enabled for all origins
 
 //create a connection pool to get next available connection instead of .createConnection, which creates a single, blocking connection
 const db = mysql.createPool({
@@ -22,6 +22,7 @@ const db = mysql.createPool({
 });
 
 app.get("/debug/users", async (req,res) => {
+    console.log(req);
     const role = req.query.role;
     const sql = "SELECT * FROM user";
 
@@ -39,6 +40,10 @@ app.get("/debug/users", async (req,res) => {
         const errMsg = `you are not authorized to access this resource :p ur current role: ${role}`;
         return res.status(401).json({error: errMsg});
     }
+});
+
+app.options(() => {
+
 });
 
 app.listen(PORT, () => {

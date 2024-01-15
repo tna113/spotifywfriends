@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -18,10 +18,7 @@ const apiBox = {
 }
 
 export default function DebugScreen() {
-    const [output, setOutput] = useState("");
-    useEffect(() => {
-        setOutput("output");
-    });
+    const [output, setOutput] = useState("output");
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useState();
@@ -32,7 +29,7 @@ export default function DebugScreen() {
         const axiosConfig = {
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json",
             }
         };
     
@@ -43,17 +40,18 @@ export default function DebugScreen() {
         }
         
         //use axios to make requests/talk to express
-        axios.get(`http://localhost:3001/debug/users`, params, axiosConfig)
+        axios.get(`http://localhost:3001/debug/users`, {params, axiosConfig})
             .then((response) => {
-                alert('hi');
                 console.log(response.data);
-                setUsers(response.data);
+                setUsers(response.data); 
                 setOutput("a response?");
             })
     
             //TODO: handle errors, alert snackboxes?
             // eslint-disable-next-line no-unused-vars
-            .catch((error) => []);
+            .catch((error) => {
+                setOutput("error");
+            });
     };
 
 
