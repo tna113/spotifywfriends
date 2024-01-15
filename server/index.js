@@ -1,6 +1,7 @@
 //use express to make a simple web server
 const express = require("express");
 const mysql = require("mysql");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 const DBHOST = "216.172.184.38";
@@ -10,6 +11,7 @@ const DBNAME = "theaaria_spotifywfriends";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 //create a connection pool to get next available connection instead of .createConnection, which creates a single, blocking connection
 const db = mysql.createPool({
