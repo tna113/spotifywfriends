@@ -19,21 +19,25 @@ const db = mysql.createPool({
     database: DBNAME,
 });
 
-app.get("/debug", (req,res) => {
-    db.query(
-        `SELECT * FROM user`, function (err,results) {
-            if (err) {
-                console.log(err);
-                return;
-            } else {
-                console.log(results);
-                return;
-            }
-        }
-    );
+app.get("/debug/users", async (req,res) => {
+    const role = req.query.role;
+    const sql = "SELECT * FROM user";
 
-    res.status(200).json({mesage: 'hello werld'})
-})
+    if (role==="admin") {
+        db.query(sql, (err,results) => {
+                if (err) {
+                    const errMsg = "you are not authorized to access this resource :p";
+                    return res.status(401).json({error: err, message: errMsg});
+                } else {
+                    return res.status(200).json({mesage: 'success', data: results});
+                }
+            }
+        );
+    } else {
+        const errMsg = `you are not authorized to access this resource :p ur current role: ${role}`;
+        return res.status(401).json({error: errMsg});
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);
