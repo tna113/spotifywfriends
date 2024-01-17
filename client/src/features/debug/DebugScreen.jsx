@@ -19,13 +19,13 @@ const apiBox = {
 
 export default function DebugScreen() {
     const [output, setOutput] = useState("output");
+    const [users, setUsers] = useState([]);
 
-    // eslint-disable-next-line no-unused-vars
-    const [users, setUsers] = useState();
-    const handleFetchUsers = (event) => {
+    //TODO: transfer to util file
+    const fetchUsers = (event) => {
         event.preventDefault();
     
-        //request headers
+        //define request headers
         const axiosConfig = {
             headers: {
                 "Content-Type": "application/json",
@@ -33,27 +33,25 @@ export default function DebugScreen() {
             }
         };
     
-        //request parameters
+        //define request parameters
         //TODO: handle roles
         const params = {
             role: "admin"
         }
         
-        //use axios to make requests/talk to express
+        //use axios to make requests/talk to express backend
         axios.get(`http://localhost:3001/debug/users`, {params, axiosConfig})
-            .then((response) => {
-                console.log(response.data);
-                setUsers(response.data); 
-                setOutput("a response?");
-            })
+            .then(response => response.data.users)
     
             //TODO: handle errors, alert snackboxes?
-            // eslint-disable-next-line no-unused-vars
-            .catch((error) => {
-                setOutput("error");
-            });
+            .catch((err) => ([{error: err}]));
     };
-
+    
+    const handleFetchUsers = (event) => {
+        console.log(fetchUsers(event));
+        setUsers(fetchUsers(event));
+        setOutput(`number of users: ${users.length}`);
+    };
 
     return (
         <Page title="debug screen" subtitle="a screen for debugging/development purposes">
@@ -68,9 +66,9 @@ export default function DebugScreen() {
             <div style={apiBox}>
                 <Typography variant="h6">fetch api</Typography>
                 <div style={buttonBox}>
-                    <Button variant="outlined" onClick={handleFetchUsers}>fetch users</Button>
+                    <Button variant="outlined" onClick={(event) => handleFetchUsers(event)}>fetch users</Button>
                 </div>
-                <textarea rows="20">{output}</textarea>
+                <textarea rows="20" placeholder={output} />
             </div>
         </Page>
     )
