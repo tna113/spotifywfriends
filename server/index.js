@@ -28,15 +28,12 @@ app.get("/debug/users", async (req,res) => {
     if (role==="admin") {
         try {
             db.query(sql, (err,results) => {
-                console.log(`successfully fetched ${results.length} users`);
-
                 return res.status(200).json({
                     mesage: "successfully fetched users", 
                     users: results
                 });
             }); 
         } catch (err) {
-            console.log("something went wrong");
             return res.status(500).json({message: "oops, something went wrong :(", error: err});
         }
     } else {
