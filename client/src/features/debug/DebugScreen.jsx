@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import axios from "axios";
 import Page from "../../components/Page";
 
 const buttonBox = {
@@ -16,6 +18,37 @@ const apiBox = {
 }
 
 export default function DebugScreen() {
+    const [output, setOutput] = useState("output");
+
+    //TODO: transfer to util file
+    const fetchUsers = async (event) => {
+        event.preventDefault();
+    
+        //define request headers
+        const axiosConfig = {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        };
+    
+        //define request parameters
+        //TODO: handle roles
+        const params = {
+            role: "admin"
+        }
+        
+        //use axios to make requests/talk to express backend
+        axios.get(`http://localhost:3001/debug/users`, {params, axiosConfig})
+            .then(response => {
+                const jsonUsers = JSON.stringify(response.data.users);
+                setOutput(jsonUsers);
+            })
+    
+            //TODO: handle errors, alert snackboxes?
+            .catch((err) => ([{error: err}]))
+    };
+
     return (
         <Page title="debug screen" subtitle="a screen for debugging/development purposes">
             <div style={buttonBox}>
@@ -29,9 +62,9 @@ export default function DebugScreen() {
             <div style={apiBox}>
                 <Typography variant="h6">fetch api</Typography>
                 <div style={buttonBox}>
-                    <Button variant="outlined">fetch users</Button>
+                    <Button variant="outlined" onClick={(event) => fetchUsers(event)}>fetch users</Button>
                 </div>
-                <textarea rows="20">output</textarea>
+                <textarea rows="20" placeholder={output} />
             </div>
         </Page>
     )

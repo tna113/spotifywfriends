@@ -1,6 +1,7 @@
 //use express to make a simple web server
 const express = require("express");
 const mysql = require("mysql");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 const DBHOST = "216.172.184.38";
@@ -10,6 +11,7 @@ const DBNAME = "theaaria_spotifywfriends";
 
 const app = express();
 app.use(express.json());
+app.use(cors()); //cors-enabled for all origins
 
 //create a connection pool to get next available connection instead of .createConnection, which creates a single, blocking connection
 const db = mysql.createPool({
@@ -19,21 +21,26 @@ const db = mysql.createPool({
     database: DBNAME,
 });
 
-app.get("/debug", (req,res) => {
-    db.query(
-        `SELECT * FROM user`, function (err,results) {
-            if (err) {
-                console.log(err);
-                return;
-            } else {
-                console.log(results);
-                return;
-            }
-        }
-    );
+app.get("/debug/users", async (req,res) => {
+    const role = req.query.role;
+    const sql = "SELECT * FROM user";
 
-    res.status(200).json({mesage: 'hello werld'})
-})
+    if (role==="admin") {
+        try {
+            db.query(sql, (err,results) => {
+                return res.status(200).json({
+                    mesage: "successfully fetched users", 
+                    users: results
+                });
+            }); 
+        } catch (err) {
+            return res.status(500).json({message: "oops, something went wrong :(", error: err});
+        }
+    } else {
+        let msg = `you are not authorized to access this resource :p`;
+        return res.status(401).json({message: msg});
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);
