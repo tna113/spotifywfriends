@@ -1,8 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React, { useState } from "react";
 import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import axios from "axios";
+import { Stack } from "@mui/system";
 import Page from "../../components/Page";
 
 const buttonBox = {
@@ -49,6 +50,33 @@ export default function DebugScreen() {
             .catch((err) => ([{error: err}]))
     };
 
+    //get access token
+    const getToken = async (event) => {
+        event.preventDefault();
+
+        //define headers, parameters
+        const axiosConfig = {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        };
+
+        const json = {
+            grant_type: "client_credentials",
+            client_id: "4f75feb86a3d49adb5a7df64f4d8780d",
+            client_secret: "ee257029ff0a4e999bd831c347bca096",
+        };
+
+        const data = new URLSearchParams(Object.entries(json)).toString();
+
+        //use axios to make post request
+        axios.post('https://accounts.spotify.com/api/token', data, axiosConfig)
+            .then(response => {
+                setOutput(JSON.stringify(response.data));
+            })
+            .catch(err => ([{error: err}]));
+    }
+
     return (
         <Page title="debug screen" subtitle="a screen for debugging/development purposes">
             <div style={buttonBox}>
@@ -61,9 +89,16 @@ export default function DebugScreen() {
 
             <div style={apiBox}>
                 <Typography variant="h6">fetch api</Typography>
-                <div style={buttonBox}>
-                    <Button variant="outlined" onClick={(event) => fetchUsers(event)}>fetch users</Button>
-                </div>
+                
+                <Stack direction='row' spacing={2}>
+                    <div style={buttonBox}>
+                        <Button variant="outlined" onClick={(event) => fetchUsers(event)}>fetch users</Button>
+                    </div>
+                    <div style={buttonBox}>
+                        <Button variant="outlined" onClick={(event) => getToken(event)}>fetch spotify token</Button>
+                    </div>
+                </Stack>
+
                 <textarea rows="20" placeholder={output} />
             </div>
         </Page>
