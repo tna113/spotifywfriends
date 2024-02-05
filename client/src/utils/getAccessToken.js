@@ -1,9 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import axios from "axios";
 
-const getAccessToken = async (event) => {
-    event.preventDefault();
-
+const getAccessToken = async () => {
     //define headers, parameters
     const axiosConfig = {
         headers: {
@@ -21,7 +19,7 @@ const getAccessToken = async (event) => {
 
     //use axios to make post request
     return axios.post('https://accounts.spotify.com/api/token', data, axiosConfig)
-        .then(response => JSON.stringify(response.data.access_token))
+        .then(response => response.data.access_token)
         .catch(err => `error: ${err}`);
 }
 

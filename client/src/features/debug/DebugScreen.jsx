@@ -52,8 +52,8 @@ export default function DebugScreen() {
     };
 
     //get access token
-    const getToken = (event) => {
-        const query = getAccessToken(event);
+    const getToken = () => {
+        const query = getAccessToken();
         query.then(response => {
             setOutput(response);
         })
@@ -77,7 +77,7 @@ export default function DebugScreen() {
                         <Button variant="outlined" onClick={(event) => fetchUsers(event)}>fetch users</Button>
                     </div>
                     <div style={buttonBox}>
-                        <Button variant="outlined" onClick={(event) => getToken(event)}>fetch spotify token</Button>
+                        <Button variant="outlined" onClick={() => getToken()}>fetch spotify token</Button>
                     </div>
                 </Stack>
 

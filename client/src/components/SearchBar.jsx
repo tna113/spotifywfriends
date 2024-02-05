@@ -1,38 +1,38 @@
 import { Container, FormControl, Input, InputLabel } from "@mui/material";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import getAccessToken from "../utils/getAccessToken";
 
 const baseEndpoint = "https://api.spotify.com";
 const searchEndpoint = "/v1/search";
 
-//https://api.spotify.com/v1/search?q=remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis&type=track
-
-//https://developer.spotify.com/documentation/web-api/tutorials/getting-started
-
-//https://developer.spotify.com/documentation/web-api/concepts/api-calls
-
-//https://developer.spotify.com/documentation/web-api/reference/search
-
 export default function SearchBar() {
     const [searchStr, setSearchStr] = useState("");
+    const [token, setToken] = useState("");
+    const [results, setResults] = useState([]);
+    let test;
+
     const handleSearchChange = (event) => {
         event.preventDefault();
-        console.log(`seachStr: ${event.target.value}`);
         setSearchStr(event.target.value);
     }
 
-    const searchArtist = async (event) => {
-        event.preventDefault();
+    useEffect(() => {
+        const query = getAccessToken();
+        query.then(response => {
+            setToken(response);
+        })
+    }, [test]);
 
-        //get access token
-        const accessToken = "";
+    const search = async (event) => {
+        event.preventDefault();
 
         //define req headers
         const axiosConfig = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": `Bearer ${token}`,
             }
         }
 
@@ -43,19 +43,21 @@ export default function SearchBar() {
         }
 
         //use axios to make reqest
-        axios.get(`${baseEndpoint}${searchEndpoint}`, {})
+        axios.get(`${baseEndpoint}${searchEndpoint}`, {params, axiosConfig})
             .then(response => {
-                
+                setResults(response.data);
             })
             .catch((err) => ([{error: err}]));
     }
 
     return (
         <Container>
-            <FormControl fullWidth>
-                <InputLabel>Search</InputLabel>
-                <Input placeholder="Search" defaultValue={searchStr} onChange={(event) => handleSearchChange(event)} />
-            </FormControl>
+            <form onSubmit={search}>
+                <FormControl fullWidth>
+                    <InputLabel>Search</InputLabel>
+                    <Input placeholder="Search" defaultValue={searchStr} onChange={(event) => handleSearchChange(event)} />
+                </FormControl>
+            </form>
         </Container>
     )
 }
