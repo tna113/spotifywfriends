@@ -33,17 +33,15 @@ export default function SearchBar() {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": `Bearer ${token}`,
+            },
+            params: {
+                q: searchStr,
+                type: "track",
             }
         }
 
-        //define PATH parameters
-        const params = {
-            q: searchStr,
-            type: "track",
-        }
-
         //use axios to make reqest
-        axios.get(`${baseEndpoint}${searchEndpoint}`, {params, axiosConfig})
+        axios.get(`${baseEndpoint}${searchEndpoint}`, axiosConfig)
             .then(response => {
                 setResults(response.data);
             })
