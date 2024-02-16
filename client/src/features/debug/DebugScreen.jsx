@@ -65,7 +65,9 @@ export default function DebugScreen() {
                 <Link to="/home">
                     <Button variant="outlined">home screen</Button>
                 </Link>
-                <Button variant="outlined">login screen</Button>
+                <Link to="/login">
+                    <Button variant="outlined">login screen</Button>
+                </Link>
             </div>
 
 

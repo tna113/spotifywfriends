@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import DebugScreen from "./features/debug/DebugScreen";
+import LoginScreen from "./features/auth/LoginScreen";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -20,13 +21,16 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <App />
+  },
+  {
+    path: "/login",
+    element: <LoginScreen />
   }
 ]);
 
 // Creates the theme for MUI
 const theme = createTheme({
   palette: {
-    mode: "dark",
     primary: {
       main: "#1fdf64",
     },
