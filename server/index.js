@@ -21,6 +21,8 @@ const db = mysql.createPool({
     database: DBNAME,
 });
 
+//TODO: check role first
+
 app.get("/debug/users", async (req,res) => {
     const role = req.query.role;
     const sql = "SELECT * FROM user";
@@ -41,6 +43,28 @@ app.get("/debug/users", async (req,res) => {
         return res.status(401).json({message: msg});
     }
 });
+
+app.get("/debug/songs", async (req,res) => {
+    const role = req.query.role;
+    const sql = "SELECT * FROM song";
+
+    if (role==="admin") {
+        try {
+            db.query(sql, (err,results) => {
+                return res.status(200).json({
+                    mesage: "successfully fetched songs", 
+                    songs: results
+                });
+            }); 
+        } catch (err) {
+            return res.status(500).json({message: "oops, something went wrong :(", error: err});
+        }
+    } else {
+        let msg = `you are not authorized to access this resource :p`;
+        return res.status(401).json({message: msg});
+    }
+});
+
 
 app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);

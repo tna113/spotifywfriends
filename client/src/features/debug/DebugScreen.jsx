@@ -51,6 +51,31 @@ export default function DebugScreen() {
             .catch((err) => ([{error: err}]))
     };
 
+    const fetchSongs = async (event) => {
+        event.preventDefault();
+    
+        const axiosConfig = {
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        };
+    
+        //TODO: handle roles
+        const params = {
+            role: "admin"
+        }
+        
+        axios.get(`http://localhost:3001/debug/songs`, {params, axiosConfig})
+            .then(response => {
+                const jsonSongs = JSON.stringify(response.data.songs);
+                setOutput(jsonSongs);
+            })
+    
+            //TODO: handle errors, alert snackboxes?
+            .catch((err) => ([{error: err}]))
+    };
+
     //get access token
     const getToken = () => {
         const query = getAccessToken();
@@ -76,6 +101,11 @@ export default function DebugScreen() {
                     <div style={buttonBox}>
                         <Button variant="outlined" onClick={(event) => fetchUsers(event)}>fetch users</Button>
                     </div>
+
+                    <div style={buttonBox}>
+                        <Button variant="outlined" onClick={(event) => fetchSongs(event)}>fetch songs</Button>
+                    </div>
+
                     <div style={buttonBox}>
                         <Button variant="outlined" onClick={() => getToken()}>fetch spotify token</Button>
                     </div>
