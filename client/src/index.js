@@ -8,6 +8,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import DebugScreen from "./features/debug/DebugScreen";
 import LoginScreen from "./features/auth/LoginScreen";
+import ForgotPasswordScreen from "./features/auth/ForgotPasswordScreen";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginScreen />
+  },
+  {
+    path: "/forgot",
+    element: <ForgotPasswordScreen />
   }
 ]);
 

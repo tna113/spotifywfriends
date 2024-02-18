@@ -68,6 +68,9 @@ export default function DebugScreen() {
                 <Link to="/login">
                     <Button variant="outlined">login screen</Button>
                 </Link>
+                <Link to="/forgot">
+                    <Button variant="outlined">forgot password</Button>
+                </Link>
             </div>
 
 
